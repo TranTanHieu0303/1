@@ -7,6 +7,7 @@
     tools:context=".Activity.LoginActivity"
     android:background="@drawable/background">
 
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -35,53 +36,67 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <EditText
-        android:id="@+id/tvemail"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="16dp"
-        android:background="#131313"
-        android:ems="10"
-        android:fontFamily="@font/aclonica"
-        android:hint="Email"
-        android:inputType="textPersonName"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
         android:padding="10dp"
-        android:textColor="#F3EBEB"
-        android:textColorHint="#FAF2F2"
-        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-    <EditText
-        android:id="@+id/tvpassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="#0E0E0E"
-        android:ems="10"
-        android:fontFamily="@font/aclonica"
-        android:hint="Password"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:password="true"
-        android:textColor="#F4ECEC"
-        android:textColorHint="#F8F1F1"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvemail" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/cpp_manuoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:ccp_defaultNameCode="@string/MNuoc" />
+
+            <EditText
+                android:id="@+id/tvsdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#131313"
+                android:ems="10"
+                android:hint="Số Điện Thoại"
+                android:padding="10dp"
+                android:phoneNumber="true"
+                android:textColor="#F3EBEB"
+                android:textColorHint="#FAF2F2"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/tvpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0E0E0E"
+            android:ems="10"
+            android:fontFamily="@font/aclonica"
+            android:hint="Password"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:password="true"
+            android:textColor="#F4ECEC"
+            android:textColorHint="#F8F1F1"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="92dp"
         android:layout_marginEnd="16dp"
         android:background="#2196F3"
         android:fontFamily="@font/aclonica"
@@ -89,8 +104,9 @@
         android:textColor="#F8F3F3"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvpassword" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <TextView
         android:id="@+id/tvcreateText"

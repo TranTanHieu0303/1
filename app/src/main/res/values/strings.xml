@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HCL Film 1</string>
+    <string name="lbl_gmail">Gmail</string>
+    <string name="btn_DangXuat">Đăng Xuất</string>
+    <string name="appID" translatable="false">3530760541578177234</string>
+    <string name="MNuoc">VN</string>
 </resources>

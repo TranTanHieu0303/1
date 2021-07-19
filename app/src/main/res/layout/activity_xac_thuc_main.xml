@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.XacThucMainActivity"
+    android:orientation="vertical">
+<com.hbb20.CountryCodePicker
+    android:id="@+id/ctp_manuoc"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:ccp_defaultNameCode="@string/MNuoc"
+    />
+<EditText
+    android:id="@+id/edt_sdt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:phoneNumber="true"/>
+    <Button
+        android:id="@+id/btn_goima"
+        android:text="Gởi TOP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HCL Film 1</string>
+    <string name="lbl_gmail">Gmail</string>
+    <string name="btn_DangXuat">Đăng Xuất</string>
+    <string name="MNuoc">VN</string>
+</resources>

@@ -12,7 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HCLFlim">
-        <activity android:name=".Activity.LoginActivity"></activity>
+        <activity android:name=".Activity.GoiMaXacThucActivity"></activity>
+        <activity android:name=".Activity.XacThucMainActivity" />
+        <activity android:name=".Activity.DanhMucPhimMainActivity" />
+        <activity android:name=".Activity.XemPhimActivity" />
+        <activity android:name=".Activity.PhimitemActivity" />
+        <activity android:name=".Activity.RegisterActivity" />
+        <activity android:name=".Activity.HomeActivity" />
+        <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,11 +28,9 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Object.KiemTraKetNoi">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+        <meta-data
+            android:name="com.zing.zalo.zalosdk.appID"
+            android:value="@string/appID" />
     </application>
 
 </manifest>
