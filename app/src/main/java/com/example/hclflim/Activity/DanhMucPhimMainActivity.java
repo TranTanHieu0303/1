@@ -17,6 +17,7 @@ import com.example.hclflim.Object.DanhMuc;
 import com.example.hclflim.Object.DanhmucAdapter;
 import com.example.hclflim.Object.Phim;
 import com.example.hclflim.Object.PhimAdapter;
+import com.example.hclflim.Object.TaiKhoan;
 import com.example.hclflim.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -38,11 +39,12 @@ public class DanhMucPhimMainActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DanhmucAdapter danhmucAdapter;
     PhimAdapter phimAdapter;
-
+TaiKhoan taiKhoan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_danh_muc_phim_main);
+        taiKhoan = (TaiKhoan) getIntent().getSerializableExtra("TaiKhoan");
         madm = getIntent().getStringExtra("MaDM");
         toolbar = findViewById(R.id.toolbar_dm);
         setSupportActionBar(toolbar);
@@ -79,13 +81,11 @@ public class DanhMucPhimMainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
                 Phim phim = snapshot.getValue(Phim.class);
-                if(phim.getdanhmuc().equals(madm)) {
+                if(phim.getdanhmuc().contains(madm)) {
                     listphim.add(phim);
-                    phimAdapter = new PhimAdapter(DanhMucPhimMainActivity.this,listphim);
+                    phimAdapter = new PhimAdapter(DanhMucPhimMainActivity.this,listphim,taiKhoan);
                     view.setAdapter(phimAdapter);
                 }
-
-
             }
 
             @Override

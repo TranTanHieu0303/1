@@ -14,17 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hclflim.Activity.PhimitemActivity;
 import com.example.hclflim.R;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PhimAdapter extends RecyclerView.Adapter<PhimAdapter.KHUNGNHIN> {
     Context context;
     ArrayList<Phim> dulieu;
-
-    public PhimAdapter(Context context, ArrayList<Phim> dulieu) {
+TaiKhoan taiKhoan;
+    public PhimAdapter(Context context, ArrayList<Phim> dulieu,TaiKhoan taiKhoan) {
         this.context = context;
         this.dulieu = dulieu;
+        this.taiKhoan = taiKhoan;
     }
 
     @NonNull
@@ -44,7 +48,18 @@ public class PhimAdapter extends RecyclerView.Adapter<PhimAdapter.KHUNGNHIN> {
             .into(holder.hinh);
 
     holder.TenPhim.setText(phim.getTenPhim());
+    holder.layout.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            FirebaseDatabase.getInstance().getReference().child("TaiKhoan").child(taiKhoan.getSDT()).child("DaXem").child(phim.getMaPhim()).setValue(phim);
+            Intent intent = new Intent(context, PhimitemActivity.class);
+            intent.putExtra("itemphim",phim);
+            intent.putExtra("TaiKhoan",taiKhoan);
+            context.startActivity(intent);
+        }
+    });
     }
+
 
     @Override
     public int getItemCount() {
@@ -68,9 +83,6 @@ public class PhimAdapter extends RecyclerView.Adapter<PhimAdapter.KHUNGNHIN> {
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(itemView.getContext(), PhimitemActivity.class);
-                    intent.putExtra("itemphim",phim);
-                    itemView.getContext().startActivity(intent);
                 }
             });
             TenPhim.setOnClickListener(new View.OnClickListener() {

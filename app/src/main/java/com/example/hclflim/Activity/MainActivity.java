@@ -13,9 +13,17 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.hclflim.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.jetbrains.annotations.NotNull;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 }
-            },2000);
+            },1000);
 
         }
         else {

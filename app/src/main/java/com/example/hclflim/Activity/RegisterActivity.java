@@ -93,9 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                     mPassword2.setError("Cần trùng với ô mật khẩu");
                     return;
                 }
-
                 progressBar.setVisibility(View.VISIBLE);
-
                 //Tạo tài khoản người dùng với sdt đã đăng kí.
                 try {
                     TaiKhoan taiKhoan = new TaiKhoan(fullname,phone,password);

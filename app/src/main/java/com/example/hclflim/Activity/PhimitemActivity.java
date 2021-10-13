@@ -22,10 +22,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.hclflim.Fragment.PhimLienQuanFragment;
+import com.example.hclflim.Fragment.TapphimFragment;
 import com.example.hclflim.Fragment.ThongTinPhimFragment;
 import com.example.hclflim.Object.PagerAdapter;
 import com.example.hclflim.Object.Phim;
 import com.example.hclflim.Object.QuocGia;
+import com.example.hclflim.Object.TaiKhoan;
+import com.example.hclflim.Object.TapPhim;
+import com.example.hclflim.Object.TapPhimAdapter;
 import com.example.hclflim.Object.TheLoai;
 import com.example.hclflim.R;
 import com.google.android.material.tabs.TabLayout;
@@ -41,6 +46,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,11 +58,15 @@ public class PhimitemActivity  extends AppCompatActivity
     TabLayout tabLayout;
     ViewPager viewPager;
     public Phim p;
+    ArrayList<TapPhim> tapPhims = new ArrayList<>();
     ArrayList<Fragment> tabdata = new ArrayList<>();
+    TapPhim tapPhim;
     String[] tablist = {"Thông Tin","Phim Liên Quan"};
+    String[] tablist2 = {"Thông Tin","Tập Phim","Phim Liên Quan"};
     YouTubePlayerView videoView;
     ActionBar actionBar;
     Toolbar toolbar;
+    TaiKhoan taiKhoan;
     int REQUSET = 123;
     String KEY_APIYOUTUBE = "AIzaSyBLVlE0lsuW15FkerCxXwrD551Jq5B4bZs";
 
@@ -65,6 +75,8 @@ public class PhimitemActivity  extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phimitem);
         p = (Phim) getIntent().getSerializableExtra("itemphim");
+        tapPhim = (TapPhim)getIntent().getSerializableExtra("tap");
+        taiKhoan = (TaiKhoan) getIntent().getSerializableExtra("TaiKhoan");
         toolbar = findViewById(R.id.toll_1);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,18 +84,63 @@ public class PhimitemActivity  extends AppCompatActivity
         frag.initialize(KEY_APIYOUTUBE, this);
         tabLayout = findViewById(R.id.tab_phim);
         viewPager = findViewById(R.id.vp_phim);
-        tabdata.add(new ThongTinPhimFragment(p));
-        tabdata.add(new ThongTinPhimFragment(p));
+        loaddulieu();
+       /* tabdata.add(new ThongTinPhimFragment(p));
+        tabdata.add(new PhimLienQuanFragment(p.getTheLoai()));
         FragmentManager fragmentManager = getSupportFragmentManager();
         PagerAdapter pagerAdapter = new PagerAdapter(fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pagerAdapter.MakeTab(tabdata,tablist);
         tabLayout.setupWithViewPager(viewPager);
-        viewPager.setAdapter(pagerAdapter);
+        viewPager.setAdapter(pagerAdapter);*/
         //videoView = findViewById(R.id.vd_itemphim);
 
         //videoView.initialize(KEY_APIYOUTUBE,this);*/
 
         }
+
+    private void loaddulieu() {
+        Query dataTapphim = FirebaseDatabase.getInstance().getReference().child("Phim").child(p.getMaPhim()).child("TapPhim");
+        dataTapphim.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for (DataSnapshot ds :snapshot.getChildren()
+                     ) {
+                    TapPhim tapPhim = ds.getValue(TapPhim.class);
+                    if(tapPhim!=null)
+                        tapPhims.add(tapPhim);
+                }
+                if(tapPhims.size()>0)
+                {
+                    if(tapPhim!=null)
+                        tabdata.add(new ThongTinPhimFragment(p,tapPhim.getTenTap()));
+                    else
+                        tabdata.add(new ThongTinPhimFragment(p));
+                    tabdata.add(new TapphimFragment(p,tapPhims));
+                    tabdata.add(new PhimLienQuanFragment(p.getTheLoai(),taiKhoan));
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    PagerAdapter pagerAdapter = new PagerAdapter(fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+                    pagerAdapter.MakeTab(tabdata,tablist2);
+                    tabLayout.setupWithViewPager(viewPager);
+                    viewPager.setAdapter(pagerAdapter);
+                }
+                else
+                {
+                    tabdata.add(new ThongTinPhimFragment(p));
+                    tabdata.add(new PhimLienQuanFragment(p.getTheLoai(),taiKhoan));
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    PagerAdapter pagerAdapter = new PagerAdapter(fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+                    pagerAdapter.MakeTab(tabdata,tablist);
+                    tabLayout.setupWithViewPager(viewPager);
+                    viewPager.setAdapter(pagerAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
     @Override
@@ -97,6 +154,10 @@ public class PhimitemActivity  extends AppCompatActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+            case R.id.love:
+            {
+                FirebaseDatabase.getInstance().getReference().child("TaiKhoan").child(taiKhoan.getSDT()).child("YeuThich").child(p.getMaPhim()).setValue(p);
+            }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -152,7 +213,10 @@ public class PhimitemActivity  extends AppCompatActivity
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
         if(!b)
-        youTubePlayer.cueVideo(p.getLinkPhim());
+            if(tapPhim==null)
+                 youTubePlayer.cueVideo(p.getLinkPhim());
+            else
+                youTubePlayer.cueVideo(tapPhim.getLinkTap());
 
     }
 

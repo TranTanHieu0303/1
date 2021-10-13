@@ -31,13 +31,20 @@ import java.util.ArrayList;
 public class ThongTinPhimFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     DatabaseReference data = FirebaseDatabase.getInstance().getReference();
-    ArrayList<QuocGia> quocGia = new ArrayList<>();
+    QuocGia quocGia ;
     final ArrayList<TheLoai> theLoai =new ArrayList<>();
     Phim p ;
     String t = "" ;
     TextView tv_tenphim,tv_thoiluong,tv_dienvien,tv_quocgia,tv_theloai,tv_sotap,tv_mota;
+    String ten;
     public ThongTinPhimFragment(Phim p) {
         this.p = p;
+        this.firebaseAuth = FirebaseAuth.getInstance();
+
+    }
+    public ThongTinPhimFragment(Phim p,String ten) {
+        this.p = p;
+        this.ten = ten;
         this.firebaseAuth = FirebaseAuth.getInstance();
 
     }
@@ -48,17 +55,20 @@ public class ThongTinPhimFragment extends Fragment {
         View v =inflater.inflate(R.layout.layout_thongtin,container,false);
         tv_tenphim = v.findViewById(R.id.tv_ttTenphim);
         tv_thoiluong = v.findViewById(R.id.tv_ttThoiluongHT);
-        tv_dienvien = v.findViewById(R.id.tv_ttQuocGiaHT);
-        tv_quocgia = v.findViewById(R.id.tv_ttDienvienHT);
+        tv_dienvien = v.findViewById(R.id.tv_ttDienvienHT);
+        tv_quocgia = v.findViewById(R.id.tv_ttQuocGiaHT);
         tv_theloai = v.findViewById(R.id.tv_ttTheLoaiHT);
         tv_sotap = v.findViewById(R.id.tv_ttSotapHT);
         tv_mota = v.findViewById(R.id.tv_ttMotaHT);
         data.child("QuocGia").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-                QuocGia qGia =snapshot.getValue(QuocGia.class);
-                quocGia.add(qGia);
-                loadtab();
+                quocGia =snapshot.getValue(QuocGia.class);
+                if(p.getQuocGia()!=null)
+                    if(p.getQuocGia().equals(quocGia.getMaQG())) {
+                        p.setQuocGia(quocGia.getTenQG());
+                        loadtab();
+                    }
             }
 
             @Override
@@ -123,6 +133,9 @@ public class ThongTinPhimFragment extends Fragment {
 
     }
     private void loadtab() {
+        if(ten!=null)
+            tv_tenphim.setText(ten);
+        else
         tv_tenphim.setText(p.getTenPhim());
         tv_thoiluong.setText(p.getThoiluong());
         tv_dienvien.setText(p.getDienvien());

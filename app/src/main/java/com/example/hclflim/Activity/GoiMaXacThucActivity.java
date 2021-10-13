@@ -32,7 +32,7 @@ public class GoiMaXacThucActivity extends AppCompatActivity {
     String sdt ;
     FirebaseAuth firebaseAuth;
     EditText editText;
-    Button btn_sigin;
+    Button btn_sigin,btn_goilaima;
     private String verificationId;
     TextView tv_thb;
     @Override
@@ -45,7 +45,6 @@ public class GoiMaXacThucActivity extends AppCompatActivity {
         sendVerificationCode(sdt);
         btn_sigin = findViewById(R.id.btn_goima);
         tv_thb = findViewById(R.id.tv_thongbao);
-        tv_thb.setVisibility(View.INVISIBLE);
         btn_sigin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,10 +57,26 @@ public class GoiMaXacThucActivity extends AppCompatActivity {
                 verifyCode(code);
             }
         });
+        btn_goilaima = findViewById(R.id.btn_goilaima);
+        btn_goilaima.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendVerificationCode(sdt);
+                new CountDownTimer(60000,1000){
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        tv_thb.setText("Gởi lại mã sau"+millisUntilFinished/1000+"giây");
+                    }
+                    @Override
+                    public void onFinish() {
+                        tv_thb.setVisibility(View.INVISIBLE);
+                    }
+                };
+            }
+        });
         new CountDownTimer(60000,1000){
             @Override
             public void onTick(long millisUntilFinished) {
-                tv_thb.setVisibility(View.VISIBLE);
                 tv_thb.setText("Gởi lại mã sau"+millisUntilFinished/1000+"giây");
             }
 

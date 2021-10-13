@@ -1,5 +1,6 @@
 package com.example.hclflim.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,9 +15,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.hclflim.Object.TaiKhoan;
 import com.example.hclflim.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
+
+import org.jetbrains.annotations.NotNull;
 
 public class XacThucMainActivity extends AppCompatActivity {
     CountryCodePicker ccp;
@@ -49,10 +59,38 @@ public class XacThucMainActivity extends AppCompatActivity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni =cm.getActiveNetworkInfo();
         if(ni!=null&& ni.isConnected()) {
-            Intent intent = new Intent(this, GoiMaXacThucActivity.class);
-            intent.putExtra("sdt",sdt);
-            startActivity(intent);
-            finish();
+            Query datataikhoan = FirebaseDatabase.getInstance().getReference().child("TaiKhoan").child(sdt);
+            datataikhoan.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    if(snapshot.getValue()!=null)
+                    {
+                        AlertDialog.Builder b = new AlertDialog.Builder(XacThucMainActivity.this);
+                        b.setTitle("HCL film thông báo");
+                        b.setMessage("Số điện thoại này đã có tài khoản, vui lòng sử dụng số khác");
+                        b.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog al = b.create();
+                        al.show();
+                    }
+                    else {
+                        Intent intent = new Intent(XacThucMainActivity.this, GoiMaXacThucActivity.class);
+                        intent.putExtra("sdt", sdt);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
+
 
         }
         else {

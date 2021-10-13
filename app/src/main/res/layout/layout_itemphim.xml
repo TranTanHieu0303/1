@@ -3,9 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="350dp"
     android:layout_height="wrap_content"
     android:id="@+id/lauout_itemphim"
+    android:layout_marginLeft="10dp"
+    android:padding="10dp"
     >
 
     <ImageView
@@ -20,7 +22,10 @@
         android:id="@+id/tv_TenPhim"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_HinhAnh" />
+        app:layout_constraintTop_toBottomOf="@+id/img_HinhAnh"
+        android:layout_marginBottom="5dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

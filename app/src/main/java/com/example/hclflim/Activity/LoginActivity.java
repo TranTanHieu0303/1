@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends  AppCompatActivity {
     EditText msdt, mPassword;
     Button mLoginBtn;
     TextView mCreateBtn, forgotTextLink;
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         ccp = findViewById(R.id.cpp_manuoc);
         if(taiKhoan!=null)
         {
-            msdt.setText(taiKhoan.getSDT());
+            msdt.setText(taiKhoan.getSDT().substring(3,taiKhoan.getSDT().length()));
             mPassword.setText(taiKhoan.getMatKhau());
         }
         progressBar = findViewById(R.id.progressBar2);
@@ -94,10 +95,14 @@ public class LoginActivity extends AppCompatActivity {
                 datataikhoan.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                        TaiKhoan tk = snapshot.getValue(TaiKhoan.class);
+                        TaiKhoan tk = new TaiKhoan();
+                        tk.setSDT((String) snapshot.child("sdt").getValue());
+                        tk.setMatKhau((String) snapshot.child("matKhau").getValue());
+                        tk.setTenKT((String) snapshot.child("tenKT").getValue());
                         if (tk != null) {
                             if (password.equals(tk.getMatKhau())) {
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                intent.putExtra("Taik",tk);
                                 startActivity(intent);
                                 finish();
                             }

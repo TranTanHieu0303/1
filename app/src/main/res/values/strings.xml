@@ -4,4 +4,5 @@
     <string name="btn_DangXuat">Đăng Xuất</string>
     <string name="appID" translatable="false">3530760541578177234</string>
     <string name="MNuoc">VN</string>
+    <string name="msg_token_fmt" />
 </resources>

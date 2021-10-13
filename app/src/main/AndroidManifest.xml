@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HCLFlim">
-        <activity android:name=".Activity.GoiMaXacThucActivity"></activity>
+        <activity android:name=".Activity.ThongTinTKActivity"></activity>
+        <activity android:name=".Activity.GoiMaXacThucActivity" />
         <activity android:name=".Activity.XacThucMainActivity" />
         <activity android:name=".Activity.DanhMucPhimMainActivity" />
         <activity android:name=".Activity.XemPhimActivity" />
@@ -27,6 +28,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".Object.ThongBaoFCM"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.zing.zalo.zalosdk.appID"

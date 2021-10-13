@@ -10,21 +10,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.hclflim.Activity.DanhMucPhimMainActivity;
 import com.example.hclflim.R;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import me.relex.circleindicator.CircleIndicator;
 
 public class DanhmucAdapter extends RecyclerView.Adapter<DanhmucAdapter.danhmucViewHoer> {
     Context context;
     private ArrayList<DanhMuc> danhMucs ;
-
-    public DanhmucAdapter(Context context,ArrayList<DanhMuc> danhMucs) {
+    TaiKhoan taiKhoan;
+    public DanhmucAdapter(Context context,ArrayList<DanhMuc> danhMucs,TaiKhoan taiKhoan) {
         this.context  = context;
         this.danhMucs = danhMucs;
+        this.taiKhoan = taiKhoan;
     }
 
     @NonNull
@@ -35,18 +41,24 @@ public class DanhmucAdapter extends RecyclerView.Adapter<DanhmucAdapter.danhmucV
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull danhmucViewHoer holder, int position) {
         DanhMuc danhMuc = danhMucs.get(position);
         holder.tv_dm.setText(danhMuc.getTenDM());
         holder.rev.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
         holder.rev.setFocusable(false);
-        PhimAdapter phimAdapter = new PhimAdapter(context,danhMuc.getPhims());
+        PhimAdapter phimAdapter = new PhimAdapter(context,danhMuc.getPhims(),taiKhoan);
         holder.rev.setAdapter(phimAdapter);
         holder.tv_tatca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DanhMucPhimMainActivity.class);
                 intent.putExtra("MaDM",danhMuc.getMaDM());
+                intent.putExtra("TaiKhoan",taiKhoan);
                 context.startActivity(intent);
             }
         });
@@ -73,6 +85,5 @@ public class DanhmucAdapter extends RecyclerView.Adapter<DanhmucAdapter.danhmucV
             tv_tatca = itemView.findViewById(R.id.tv_tatca);
         }
     }
-
 
 }
